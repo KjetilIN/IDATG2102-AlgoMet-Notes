@@ -183,25 +183,18 @@ public: //  Initierer medlemmer vha. default :
         if (nyLengde > kapasitet)
         {
 
-            T newData[nyLengde];
+            this->kapasitet = nyLengde;
 
-            for (int i = 0; i++; i < nyLengde)
-            {
-                try
-                {   
-                    cout << "DATA ADDED ;" << data[i] << endl;
-                    newData[i] = data[i];
-                }
-                catch (const std::exception &e)
-                {
-                    newData[i] = nothing();
-                    cout << "DATA ADDED ;" << nothing() << endl;
-                    
-                }
+            T* newData = new T[nyLengde];
+
+            for(int i =0; i <nyLengde;i++){
+                newData[i] = get(i);
             }
 
-            data = newData;
-            kapasitet = nyLengde;
+            delete[] data;
+
+            this->data = newData;
+
         }
     }
 
