@@ -28,12 +28,10 @@
  *   @author   Frode Haug, NTNU
  */
 
-
-#include <iostream>                  //  cout
-#include <string>                    //  string
-#include <typeinfo>                  //  typeid
+#include <iostream> //  cout
+#include <string>   //  string
+#include <typeinfo> //  typeid
 using namespace std;
-
 
 /**
  *  Container-klassen Vector, som er en selvlaget versjon av STLs <vector>.
@@ -41,147 +39,192 @@ using namespace std;
  *  Inneholder en array av typen 'T', og to int'er som angir total
  *  kapasitet/lengde (capacity) og det nåværende antallet (size).
  */
-template <typename T>                //  'template'!  'T': fleksibel datatype!
-class Vector {                       //  (finnes ikke direkte i Java!
-                                     //   "Generics" er noe litt lignende.)
-  private:
-      T*  data;                      //  PEKER til array av typen 'T'.
-      int kapasitet, antall;         //  Max.lengde og nåværende antall.
+template <typename T> //  'template'!  'T': fleksibel datatype!
+class Vector
+{ //  (finnes ikke direkte i Java!
+  //   "Generics" er noe litt lignende.)
+private:
+    T *data;               //  PEKER til array av typen 'T'.
+    int kapasitet, antall; //  Max.lengde og nåværende antall.
 
-                                     //  Returnerer "ingenting/tomt/blankt",
-                                     //    ut fra hva 'T' er:
-      T nothing() const {  
-        if (typeid(T) == typeid(int)){
+    //  Returnerer "ingenting/tomt/blankt",
+    //    ut fra hva 'T' er:
+    T nothing() const
+    {
+        if (typeid(T) == typeid(int))
+        {
             return 0;
-        }else if (typeid(T) == typeid(char)){
-            return ' ';
-        }else{
+        }
+        else if (typeid(T) == typeid(char))
+        {
             return ' ';
         }
+        else
+        {
+            return ' ';
+        }
+    }
 
-      }
-  public:                    //  Initierer medlemmer vha. default :
-      Vector(const int lengde = 200)  {  data = new T[lengde];
-                                         kapasitet = lengde;  antall = 0;  }
+public: //  Initierer medlemmer vha. default :
+    Vector(const int lengde = 2)
+    {
+        data = new T[lengde];
+        kapasitet = lengde;
+        antall = 0;
+    }
 
+    ~Vector() { delete[] data; } // Frigir allokert memory (vha.'new').
 
-      ~Vector()  {  delete [] data;  }  // Frigir allokert memory (vha.'new').
+    int capacity() const { return kapasitet; }
 
+    void clear()
+    { //  Nullstiller arrayens bruk:
+        //          for (int i = 0; i < antall; i++)  data[i] = 0;  //  Unødvendig?!!!
+        antall = 0;
+    }
 
-      int  capacity()  const  {  return kapasitet;  }
+    void display() const
+    { //  Skriver HELE Vectorens innhold:
+        for (int i = 0; i < antall; i++)
+            cout << i << ": " << data[i] << "  ";
+        cout << "\n\t'antall': " << antall << '\n';
+    }
 
+    bool empty() const { return (antall == 0); } //  Tomt eller ei.
 
-      void clear()  {                //  Nullstiller arrayens bruk:
-//          for (int i = 0; i < antall; i++)  data[i] = 0;  //  Unødvendig?!!!
-          antall = 0;
-      }
+    //  Tilsvarer:   .... = vec[pos].
+    T get(const int pos) const
+    {                                 //  Henter (om mulig) element nr.pos:
+        if (pos >= 0 && pos < antall) //  Innenfor bruksområde:
+            return data[pos];         //  Returnerer aktuell verdi.
+        else
+            cout << "\nIndex out of bounds .....\n\n"; //  Egen melding ??
+        return nothing();
+    }
 
+    //  Smetter inn (om mulig) 't' på plass 'pos':
+    bool insert(const int pos, const T t)
+    {
+        if (antall < kapasitet)
+        { //  OPPGAVE: øke arrayens lengde.
+            if (pos >= 0 && pos <= antall)
+            {                                      //  Lovlig indeks:
+                for (int i = antall; i > pos; i--) //  ALLE etter flyttes
+                    data[i] = data[i - 1];         //    opp ETT hakk.
+                data[pos] = t;                     //  Ny smettes inn.
+                antall++;                          //  Antall økes.
+                return true;                       //  Innsmetting lyktes.
+            }
+            else
+                cout << "\nIndex out of bounds .....\n\n"; // Egen melding ??
+        }
+        else
+            resize(kapasitet+1);
+            insert(pos,t);
+        return false;                                //  Ingen innsmetting.
+    }
 
-      void display() const {         //  Skriver HELE Vectorens innhold:
-          for (int i = 0;  i < antall;  i++)
-              cout << i << ": " << data[i] << "  ";
-          cout << "\n\t'antall': " << antall << '\n';
-      }
+    T pop_back()
+    { //  Fjerner (om mulig) bakerste:
+        if (!empty())
+        {                               //  Ikke tomt:
+            T siste = data[antall - 1]; //  Tar vare på bakerste.
+            antall--;                   //  Antallet reduseres med -1.
+            return siste;               //  Returnerer bakerste/siste.
+        }
+        else
+            cout << "\nEmpty Vector - impossible to pop!\n\n";
+        return nothing();
+    }
 
+    T pop_front()
+    { //  Fjerner (om mulig) forreste:
+        if (!empty())
+        {                       //  Ikke tomt:
+            T forste = data[0]; //  Tar vare på forreste:
+            remove(0);          //  Fjerner den første.
+            return forste;      //  Returnerer den unnalagrede.
+        }
+        else
+            cout << "\nEmpty Vector - impossible to pop!\n\n";
+        return nothing();
+    }
 
-      bool empty() const  {  return (antall == 0);  }   //  Tomt eller ei.
+    bool push_back(const T t)
+    {                             //  Legger ny inn bakerst,
+        return insert(antall, t); //    vha. annen funksjon.
+    }
 
-                                         //  Tilsvarer:   .... = vec[pos].
-      T get(const int pos) const {       //  Henter (om mulig) element nr.pos:
-          if (pos >= 0  &&  pos < antall)  //  Innenfor bruksområde:
-              return data[pos];            //  Returnerer aktuell verdi.
-          else
-              cout << "\nIndex out of bounds .....\n\n";   //  Egen melding ??
-          return nothing();
-      }
+    bool push_front(const T t)
+    {                        //  Legger ny inn forrest,
+        return insert(0, t); //    vha. annen funksjon.
+    }
 
-                                //  Smetter inn (om mulig) 't' på plass 'pos':
-      bool insert(const int pos, const T t) {
-          if (antall < kapasitet)  {        //  OPPGAVE: øke arrayens lengde.
-             if (pos >= 0  &&  pos <= antall) {       //  Lovlig indeks:
-                for (int i = antall;  i > pos;  i--)  //  ALLE etter flyttes
-                    data[i] = data[i-1];              //    opp ETT hakk.
-                data[pos] = t;                        //  Ny smettes inn.
-                antall++;                             //  Antall økes.
-                return true;                          //  Innsmetting lyktes.
-             }  else
-                 cout << "\nIndex out of bounds .....\n\n"; // Egen melding ??
-          } else
-              cout << "\nVector is already full!\n\n";      // Egen melding ??
-          return false;                               //  Ingen innsmetting.
-      }
+    bool remove(const int pos)
+    { //  Fjerner (om mulig) element nr.'pos':
+        if (pos >= 0 && pos < antall)
+        {                                          //  Lovlig indeks:
+            for (int i = pos; i < antall - 1; i++) //  Flytter alle ETTERPÅ
+                data[i] = data[i + 1];             //    ned ETT hakk.
+            antall--;                              //  Totalantallet minskes.
+            return true;
+        }
+        else
+        {
+            cout << "\nIndex out of bounds .....\n\n"; //  Egen melding ??
+            return false;
+        }
+    }
 
+    void resize(const int nyLengde)
+    { //  Øker (om mulig) arrayens lengde.
+        //  OPPGAVE:  Lage innmaten .....
 
-      T pop_back() {                      //  Fjerner (om mulig) bakerste:
-          if (!empty()) {                 //  Ikke tomt:
-              T siste = data[antall-1];   //  Tar vare på bakerste.
-              antall--;                   //  Antallet reduseres med -1.
-              return siste;               //  Returnerer bakerste/siste.
-          }  else
-              cout << "\nEmpty Vector - impossible to pop!\n\n";
-          return nothing();
-      }
+        if (nyLengde > kapasitet)
+        {
 
+            T newData[nyLengde];
 
-      T pop_front() {                     //  Fjerner (om mulig) forreste:
-          if (!empty()) {                 //  Ikke tomt:
-              T forste = data[0];         //  Tar vare på forreste:
-              remove(0);                  //  Fjerner den første.
-              return forste;              //  Returnerer den unnalagrede.
-          } else
-              cout << "\nEmpty Vector - impossible to pop!\n\n";
-          return nothing();
-      }
+            for (int i = 0; i++; i < nyLengde)
+            {
+                try
+                {   
+                    cout << "DATA ADDED ;" << data[i] << endl;
+                    newData[i] = data[i];
+                }
+                catch (const std::exception &e)
+                {
+                    newData[i] = nothing();
+                    cout << "DATA ADDED ;" << nothing() << endl;
+                    
+                }
+            }
 
+            data = newData;
+            kapasitet = nyLengde;
+        }
+    }
 
-      bool push_back(const T t) {         //  Legger ny inn bakerst,
-          return insert(antall, t);       //    vha. annen funksjon.
-      }
+    //  Tilsvarer:   vec[pos] = verdi.
+    void set(const int pos, const T verdi)
+    {
+        if (pos >= 0 && pos < antall) //  Lovlig indeks:
+            data[pos] = verdi;        //  Setter til ny verdi.
+        else
+            cout << "\nIndex out of bounds .....\n\n"; //  Egen melding ??
+    }
 
-
-      bool push_front(const T t) {        //  Legger ny inn forrest,
-          return  insert(0, t);           //    vha. annen funksjon.
-      }
-
-
-      bool remove(const int pos) {    //  Fjerner (om mulig) element nr.'pos':
-          if (pos >= 0 && pos < antall) {             //  Lovlig indeks:
-              for (int i = pos;  i < antall-1;  i++)  //  Flytter alle ETTERPÅ
-                  data[i] = data[i + 1];              //    ned ETT hakk.
-              antall--;                             //  Totalantallet minskes.
-              return true;
-          }
-          else {
-              cout << "\nIndex out of bounds .....\n\n";   //  Egen melding ??
-              return false;
-          }
-      }
-
-
-      void resize(const int nyLengde) {   //  Øker (om mulig) arrayens lengde.
-          //  OPPGAVE:  Lage innmaten .....
-      }
-
-                                            //  Tilsvarer:   vec[pos] = verdi.
-      void set(const int pos, const T verdi)  {
-          if (pos >= 0  &&  pos < antall)   //  Lovlig indeks:
-              data[pos] = verdi;            //  Setter til ny verdi.
-          else
-              cout << "\nIndex out of bounds .....\n\n";   //  Egen melding ??
-      }
-
-
-      int  size() const  {  return antall;  }   // Antall nåværende elementer.
+    int size() const { return antall; } // Antall nåværende elementer.
 };
-
 
 /**
  *  Hovedprogrammet:
  */
-int main()  {
-    Vector <int> iVec;                 //  NB:   vs.  vector <int> iVec;
-    Vector <char> cVec;                //        fra OOProg, da med liten 'v'.
-    Vector <string> sVec;
+int main()
+{
+    Vector<int> iVec;  //  NB:   vs.  vector <int> iVec;
+    Vector<char> cVec; //        fra OOProg, da med liten 'v'.
+    Vector<string> sVec;
 
     // sVec.push_back("AA");    sVec.push_back("BB");
     // sVec.push_front("CC");   sVec.push_front("DD");
@@ -215,12 +258,18 @@ int main()  {
     // sVec.pop_back();  sVec.pop_front();
     // sVec.display();
 
-    //Test integer 
+    // Test integer
 
-    iVec.push_back(23); iVec.push_back(54);
-    cout << "NR 0: " << iVec.get(0) << endl;
-    cout << "Size: " << iVec.size() << endl;
+    iVec.push_back(23);
+    iVec.push_back(54);
+    iVec.display();
+
+    cout << "RESIZED" << endl;
+
     
+    iVec.push_back(405);
+
+    iVec.display();
 
     return 0;
 }
