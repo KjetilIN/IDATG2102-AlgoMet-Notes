@@ -3,6 +3,22 @@
 
 using namespace std; 
 
+
+/**
+ * The alogoryhm to write from Infix to Postfix
+ * 
+ * 
+ * DEMANDS;
+ *  - "+" or "*" as operators only
+ *  - Whole equation must be inside perentheses
+ *  - At least one black space between each operator
+ *  - At least one black space after a number 
+ * 
+ * 
+ * @author Kjetil K. Indrehus 
+ * @return int status 
+ */
+
 int main (){
 
     stack<char> operatorStack; //Stack of operators 
@@ -13,27 +29,26 @@ int main (){
     //Loop while 
     while((curChar = cin.get()) != '\n'){ 
 
-        //Operator is pushed to stack 
-        if (curChar == '+' || curChar == '*'){
-            operatorStack.push(curChar); 
-        }
-
+        //Loop until not empty 
+        while(curChar == ' ') curChar = cin.get(); 
+        
+        //Pop operator on or off the stack 
         if (curChar == ')'){
             cout << operatorStack.top(); operatorStack.pop(); 
+        } else if (curChar == '+' || curChar == '*'){
+            operatorStack.push(curChar); 
         }
         
-        
-
-        if(curChar >= '0' && curChar <= '9'){
+        //Cout a complete number 
+        while(curChar >= '0' && curChar <= '9'){
             cout << curChar; 
-            //curChar = cin.get(); 
+            curChar = cin.get(); 
         }
 
+        //Cout a blank
         if(curChar != '('){
             cout << " "; 
         }
-        
-        
     }
 
     return 0; 
