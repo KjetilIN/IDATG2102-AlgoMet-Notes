@@ -125,8 +125,44 @@ void inorder(Node* node){
             node = node->right;
         }
     }
+}
+
+void postorder(Node *node){
+    nStack.push(node);
+    while(node || !nStack.empty()){
+        node = nStack.top(); 
+        
+        if(node->left->visit == false && node->left != nullptr){
+            cout << "LEft" << endl;
+            node = node->left;
+            nStack.push(node);
+        }else if(node->right->visit == false && node->right != nullptr){
+            cout << "Right" << endl;
+            node = node->right;
+            nStack.push(node);
+            
+        }else{
+            if(node->left == nullptr && node->right != nullptr){
+                node = node->right;
+                nStack.push(node);
+            }else if (node ->right == nullptr && node->left != nullptr){
+                node = node->left;
+                nStack.push(node);
+            }else{
+               cout << "VISIT" << endl;
+                //Visit
+                cout<< " " << node->ID;
+                node->visit = true;
+                nStack.pop(); 
+            }
+            
+        }
+        
+    }
+}
 
 
+void levelorder(Node *node){
 
 }
 
@@ -140,7 +176,7 @@ int main(){
 
     cout << "NODE ROOT: " << root->ID << endl;
 
-    inorder(root);
+    postorder(root);
 
     return 0; 
 }
