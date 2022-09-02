@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stack>
+#include <queue>
 
 using namespace std; 
 
@@ -28,6 +29,7 @@ struct Node {
 
 
 stack<Node*> nStack; 
+
 
 //Build a tree for testing 
 Node* buildTree() {
@@ -64,6 +66,13 @@ Node* buildTree() {
 /**
  * PREORDER
  * 
+ * First we add the root to the stack, then;
+ *  
+ * 1. Visit current node on top of the stack
+ * 2. Add right node to stack (if exist)
+ * 3. Add left node to stack (if exist)
+ * 4. Repeat until stack is empty
+ * 
  * @param node root node
  */
 void preorder(Node* node) {
@@ -84,6 +93,45 @@ void preorder(Node* node) {
     }
 }
 
+/**
+ * Inorder 
+ * 
+ * Checks if current node is valid, if true:
+ *  - add it to the stack, and set the currude to the left child
+ * If it is not a valid node:
+ *  - get the node that is on top of the stack
+ *  - visit, and set the current node to the right child
+ * 
+ * Repeat until stack is empty
+ * 
+ * @param node root node
+ */
+
+void inorder(Node* node){
+    while(node || !nStack.empty()){
+        if(node){ 
+            //Node is pushed to the stack and we change the node to the left child
+            nStack.push(node);
+            node = node->left;
+        }else{
+            //No left node is foud so we visit the last node on stack
+
+            node = nStack.top(); nStack.pop();
+
+            //Visit
+            cout << " " << node->ID;
+
+            //Then go right 
+            node = node->right;
+        }
+    }
+
+
+
+}
+
+
+
 
 int main(){
 
@@ -92,7 +140,7 @@ int main(){
 
     cout << "NODE ROOT: " << root->ID << endl;
 
-    preorder(root);
+    inorder(root);
 
     return 0; 
 }
