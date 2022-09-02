@@ -1,6 +1,8 @@
 #include <iostream>
 #include <stack>
 
+using namespace std; 
+
 
 /**
  * There is a lot of diffrent ways to vist all nodes in a tree. 
@@ -19,15 +21,17 @@
 //Node struct
 struct Node {
     char ID;
-    bool besokt;                       
+    bool visit;                       
     Node *left, *right;                
-    Node(char id)  {  ID = id;  left = right = nullptr;   besokt = false;  }
+    Node(char id)  {  ID = id;  left = right = nullptr;   visit = false;  }
 };
 
 
+stack<Node*> nStack; 
+
 //Build a tree for testing 
 Node* byggTre() {
-/*   Bygger treet:                                     A
+/*   Builds:                                     A
                                               /                 \
                                          B                          C
                                     /         \                  /
@@ -55,18 +59,40 @@ Node* byggTre() {
 }
 
 
+
+
 /**
  * PREORDER
  * 
  * @param node root node
  */
-void traverserPreorder(Node* node) {
-    // EMPTY
-    
+void preorder(Node* node) {
+    if(node != nullptr){
+        nStack.push(node);
+        while(!nStack.empty()){
+            //Get the node that is on top of the stack 
+            node = nStack.top(); nStack.pop();
+            //Visit
+            cout << " " << node->ID; 
+
+            //Push each child to the stack, but left will be on top
+            //But first verify they exist (Only push valid nodes)
+            if(node->right) nStack.push(node->right);
+            if(node->left) nStack.push(node->left);
+        }
+        
+    }
 }
 
 
 int main(){
+
+
+    Node *root = byggTre();
+
+    cout << "NODE ROOT: " << root->ID << endl;
+
+    preorder(root);
 
     return 0; 
 }
