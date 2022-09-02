@@ -30,7 +30,7 @@ struct Node {
 stack<Node*> nStack; 
 
 //Build a tree for testing 
-Node* byggTre() {
+Node* buildTree() {
 /*   Builds:                                     A
                                               /                 \
                                          B                          C
@@ -88,7 +88,7 @@ void preorder(Node* node) {
 int main(){
 
 
-    Node *root = byggTre();
+    Node *root = buildTree();
 
     cout << "NODE ROOT: " << root->ID << endl;
 
