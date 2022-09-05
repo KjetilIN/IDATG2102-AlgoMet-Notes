@@ -62,6 +62,10 @@ Node* buildTree() {
 }
 
 
+void visit(Node *node){
+    cout << " " << node->ID; 
+}
+
 
 
 /**
@@ -83,7 +87,7 @@ void preorder(Node* node) {
             //Get the node that is on top of the stack 
             node = nStack.top(); nStack.pop();
             //Visit
-            cout << " " << node->ID; 
+            visit(node);
 
             //Push each child to the stack, but left will be on top
             //But first verify they exist (Only push valid nodes)
@@ -120,13 +124,20 @@ void inorder(Node* node){
             node = nStack.top(); nStack.pop();
 
             //Visit
-            cout << " " << node->ID;
+            visit(node);
 
             //Then go right 
             node = node->right;
         }
     }
 }
+
+/**
+ * Postorder:
+ * - Visit children before itself
+ * 
+ * @param node root node
+ */
 
 void postorder(Node *node){
     if(node){
@@ -150,6 +161,13 @@ void postorder(Node *node){
     }
 }
 
+/**
+ * LevelOrder
+ * - Visit each "level" of nodes. 
+ * - From top to bottom
+ * 
+ * @param node root node
+ */
 
 void levelorder(Node *node){
     if(node){
@@ -159,7 +177,7 @@ void levelorder(Node *node){
             node = qStack.front(); qStack.pop();
 
             //Visit node
-            cout << " " << node->ID; 
+            visit(node);
 
             if(node->left) qStack.push(node->left);
             if(node->right) qStack.push(node->right);
