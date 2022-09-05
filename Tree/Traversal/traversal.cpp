@@ -15,6 +15,10 @@ using namespace std;
  * 
  * LEVELORDER: Visit each node from the lowest level to the top
  * 
+ * POSTORDER: Visit children berfore itself
+ * 
+ * LEVELORDER: Visit each level from top to bottom
+ * 
  * @author Kjetil K. Indrehus
  *  
  */
