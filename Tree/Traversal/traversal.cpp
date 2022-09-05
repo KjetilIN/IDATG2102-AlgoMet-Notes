@@ -12,9 +12,7 @@ using namespace std;
  * PREODER: Visit current node, then go visit left. If left has been visited, visit right.
  * 
  * INORDER: Visit the left before current node, only then visit right.
- * 
- * LEVELORDER: Visit each node from the lowest level to the top
- * 
+ *  * 
  * POSTORDER: Visit children berfore itself
  * 
  * LEVELORDER: Visit each level from top to bottom
