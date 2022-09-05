@@ -29,6 +29,7 @@ struct Node {
 
 
 stack<Node*> nStack; 
+queue<Node*> qStack; 
 
 
 //Build a tree for testing 
@@ -151,6 +152,19 @@ void postorder(Node *node){
 
 
 void levelorder(Node *node){
+    if(node){
+        qStack.push(node);
+        while(!qStack.empty()){
+            //Take the top node
+            node = qStack.front(); qStack.pop();
+
+            //Visit node
+            cout << " " << node->ID; 
+
+            if(node->left) qStack.push(node->left);
+            if(node->right) qStack.push(node->right);
+        }
+    }
 
 }
 
@@ -164,7 +178,7 @@ int main(){
 
     cout << "NODE ROOT: " << root->ID << endl;
 
-    postorder(root);
+    levelorder(root);
 
     return 0; 
 }
