@@ -48,3 +48,41 @@ Node* buildTree() {
                                 node[9]->right = node[14];
     return node[0];
 }
+
+
+void inorder(Node* node){
+    if(node){
+        inorder(node->left);
+        visit(node);
+        inorder(node->right);
+    }
+}
+
+void preorder(Node* node){
+    if(node){
+        visit(node);
+        preorder(node->left);
+        preorder(node->right);
+    }
+}
+
+void postorder(Node* node){
+    if(node){
+        postorder(node->left);
+        postorder(node->right);
+        visit(node);
+    }
+}
+
+
+
+int main(){
+
+    Node* root = buildTree();
+
+    cout << "\nInorder: "; inorder(root); cout << "\n";
+    cout << "\nPreorder: "; preorder(root); cout << "\n";
+    cout << "\nPostorder: "; postorder(root); cout << "\n";
+
+    return 0;
+}
