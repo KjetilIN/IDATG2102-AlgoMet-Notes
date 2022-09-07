@@ -15,3 +15,4 @@
 | Tree: Inorder    | Visit each tree node in inorder (Left, then itself, then right) |[HERE](https://github.com/KjetilIN/IDATG2102-AlgoMet-Notes/tree/main/Tree/Traversal)|
 | Tree: Postorder              | Visit children nodes then itself  |[HERE](https://github.com/KjetilIN/IDATG2102-AlgoMet-Notes/tree/main/Tree/Traversal)|
 | Tree: Levelorder         | Visit each level (Top-Bottom)  |[HERE](https://github.com/KjetilIN/IDATG2102-AlgoMet-Notes/tree/main/Tree/Traversal)|
+| Recursion           | Exsample of recursion: factory & fibonacci  |[HERE](https://github.com/KjetilIN/IDATG2102-AlgoMet-Notes/tree/main/Recursion)|
