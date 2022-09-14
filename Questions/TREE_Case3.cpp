@@ -56,25 +56,37 @@ void traverse(Node* node){
     }
 }
 
-
-
 //TASKS 
+
+void setLevel(Node*node){
+    if(node){
+        if(node->left) node->left->level = node->level + 1;
+        if(node->right) node->right->level = node->level + 1;
+        setLevel(node->left);
+        setLevel(node->right);
+    }
+}
+
+
+
+
 
 
 /**
  *  Main Program:
  */
 int main() {
-    int sumNiva = 0, antall = 0;  //  Viktig at begge er nullstilt.
+    int sumLevel = 0, amount = 0;  
     char ch;
 
-    srand(0);                     //   Brukes ifm. tilfeldighet/randomisering.
-
+    srand(0);                   
     cout << "\nNodes in the tree3:\n";
-                                  //  Genererer et testtre (max. 6 nivåer,
-    gRoot = generate(5, 80);      //      80% sjanse for å lage et subtre)
-    traverse(gRoot);              //  Traverserer (og viser) treet.
+    gRoot = generate(5, 80);     
+    traverse(gRoot);
+    cout << "\n\nSet level...\n";
     cin >> ch;
+    setLevel(gRoot);
+    traverse(gRoot);
 
     return 0;
 }
