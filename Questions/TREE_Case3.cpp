@@ -67,6 +67,36 @@ void setLevel(Node*node){
     }
 }
 
+void findValues(Node* node, int& sumLevel, int& amount){
+    if(node){
+        amount +=1;
+        sumLevel += node->level;
+        if(node->left) findValues(node->left, sumLevel, amount);
+        if(node->right) findValues(node->right, sumLevel, amount);
+    }
+
+}
+
+void writeParent(Node* node){
+    if(node){
+        if(!node->left && !node->right){
+            cout << "\n";
+
+            Node* currentNode = gRoot;
+            while(currentNode){
+                cout << currentNode->ID << " ";
+                currentNode = node->ID < currentNode->ID ? currentNode->left : currentNode->right;
+            }
+
+            cout << "\n";
+
+        }else{
+            writeParent(node->left);
+            writeParent(node->right);
+        }
+        
+    }
+}
 
 
 
@@ -87,6 +117,15 @@ int main() {
     cin >> ch;
     setLevel(gRoot);
     traverse(gRoot);
+    cout << "\n\nSum amounts...\n";
+    cin >> ch;
+    findValues(gRoot,sumLevel,amount);
+    cout << "NODES :" << amount<< "\n";
+    cout << "Sum of levels :" << sumLevel << "\n";
+
+    cout << "\nWrite parents: \n";
+    cin >> ch;
+    writeParent(gRoot);
 
     return 0;
 }
