@@ -104,11 +104,11 @@ void skrivAnnenhverBladnode(Node *node)
  *  @return  Antall noder under 'node' med 'ID' STØRRE ENN 'verdi'
  */
 int tellStorre(Node *node, int verdi)
-{   
-    int current = node && node->ID > verdi ? 1 :0; //Tester om noden er større en verdien 
-    int left = node->left && node->left->ID > verdi ? tellStorre(node->left,verdi) : 0; //Kaller på tellStorre kun om vedrien til venstre er høyere enn verdi
-    int right = node->right && node->right->ID > verdi ? tellStorre(node->right,verdi): 0; //Kaller på tellStorre kun om vedrien til venstre er høyere enn verdi
-    return current + left + right; //Reuturnerer resultatet
+{
+    int current = node && node->ID > verdi ? 1 : 0;                                          // Tester om noden er større en verdien
+    int left = node->left && node->left->ID > verdi ? tellStorre(node->left, verdi) : 0;     // Kaller på tellStorre kun om vedrien til venstre er høyere enn verdi
+    int right = node->right && node->right->ID > verdi ? tellStorre(node->right, verdi) : 0; // Kaller på tellStorre kun om vedrien til venstre er høyere enn verdi
+    return current + left + right;                                                           // Reuturnerer resultatet
 }
 
 /**
@@ -119,10 +119,19 @@ int tellStorre(Node *node, int verdi)
  */
 bool storreEnnBarna(Node *node)
 {
-    bool left = node->left && node->left->ID < node->ID ? storreEnnBarna(node->left)  : true;
-    bool right = node->right || (node->right && node->right->ID > node->ID);
+    if (node)
+    {
+        bool leftIsSmaller = (!node->left || (node->left->ID < node->ID));
+        bool rightIsSmaller = (!node->right || (node->right->ID < node->ID));
 
-    return left && right;
+        if (leftIsSmaller && rightIsSmaller)
+        {
+            return storreEnnBarna(node->left) && storreEnnBarna(node->right);
+        }
+        return false; 
+    }
+    return true;
+    
 }
 
 /**
@@ -144,13 +153,12 @@ int main()
     cout << "\tAntall noder storre enn " << verdi << ": "
          << tellStorre(root, verdi);
 
+    cout << "\n\n\n\nTester Oppgave C:\n"
+         << "\tEnhver foreldre er " << ((storreEnnBarna(root)) ? "" : "IKKE ")
+         << "storre enn barna sine!\n";
 
-  cout << "\n\n\n\nTester Oppgave C:\n"
-       << "\tEnhver foreldre er " << ((storreEnnBarna(root)) ? "" : "IKKE ")
-       << "storre enn barna sine!\n";
-
-  root->left->right->ID = 20;         //  Endrer verdien 15 til 20.
-  cout << "\tEnhver foreldre er " << ((storreEnnBarna(root)) ? "" : "IKKE ")
-       << "storre enn barna sine!\n\n";
+    root->left->right->ID = 20; //  Endrer verdien 15 til 20.
+    cout << "\tEnhver foreldre er " << ((storreEnnBarna(root)) ? "" : "IKKE ")
+         << "storre enn barna sine!\n\n";
     return 0;
 }
