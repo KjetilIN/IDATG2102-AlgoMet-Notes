@@ -103,9 +103,14 @@ Node* byggTre() {
  *  @see      finnMin(...)
  */
 bool erBST(Node* node) {
+    if(!node) return true; 
+    int lMax = finnMax(node->left);
+    int rMin = finnMin(node->right);
+    if(node->ID > lMax && node->ID < rMin){
+        return erBST(node->left) && erBST(node->right);
+    }
 
-    //  LAG INNMATEN  (se oppgaveteksten)
-    return true;                        // STRYK DENNE LINJEN!
+    return false;                       
 }
 
 
@@ -116,9 +121,15 @@ bool erBST(Node* node) {
  *  @return   ALLER største verdi (ID) funnet i HELE treet under 'node'
  */
 int finnMax(Node* node) {
-
-    //  LAG INNMATEN  (se oppgaveteksten)
-    return 0;                        // STRYK DENNE LINJEN!
+    if(!node) return MIN;
+    int max = node->ID;
+    int lMax = finnMax(node->left);
+    int rMax = finnMax(node->right);
+    
+    if(lMax > max) max = lMax;
+    if(rMax > max) max = rMax;
+    
+    return max;                        
 }
 
 
@@ -130,7 +141,14 @@ int finnMax(Node* node) {
  *  @return   ALLER minste verdi (ID) funnet i HELE treet under 'node'
  */
 int finnMin(Node* node) {
+    if(!node) return MAX;
+    int min = node->ID;
+    int rmin = finnMin(node->right); //MIn value from right node
+    int lmin = finnMin(node->left); //MIn value from left node
 
-    //  LAG INNMATEN  (se oppgaveteksten)
-    return 0;                        // STRYK DENNE LINJEN!
+    //Set min value to the smallest value    
+    if(lmin < min) min = lmin;
+    if(rmin < min) min = rmin;
+    
+    return min;                        
 }
