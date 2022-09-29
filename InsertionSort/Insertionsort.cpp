@@ -20,14 +20,14 @@ void insertSort(int arr[], const int n){
     int i, j, value;
 
     for(i = 2; i<n; i++){
-        j = i;
-        value = arr[i];
+        j = i; // j variable for moving back
+        value = arr[i]; // the current index value
 
-        while(arr[j-1]>value){
+        while(arr[j-1]>value){ // while the element befor index j is less then the value,
             arr[j] = arr[j-1];
             j--;
         }
-        arr[j] = value;
+        arr[j] = value; //Set the value at the postion where j-1 is less than j element
     }
 
 }

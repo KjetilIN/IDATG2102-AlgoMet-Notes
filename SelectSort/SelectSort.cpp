@@ -3,6 +3,13 @@
 using namespace std;
 
 
+/**
+ * Selection sort:
+ *  - Find the smallest element of the array ->loop
+ *  - Swap with current index
+ *  - increment index until the end of array 
+ * 
+ */
 
 const int N = 20;
 
