@@ -5,9 +5,59 @@ using namespace std;
 
 const int N = 20; // amount of elements in the array
 
+/**
+ * @brief Search SEQUENCE in a unsorted array
+ * 
+ * @param arr sorted array
+ * @param value value we are looking for
+ * @param n elements in the array
+ * @return Index returned or 0 if not found 
+ */
 
-int  searchBinary(const int arr[], const int value, const int n);
-int  searchSequence(const int arr[], const int value, const int n);
+int  searchSequence(const int arr[], const int value, const int n){
+    int index = n+1; //start all the way to the left 
+
+    //iterate trhough the array and check if current index gives correct value
+    while(index > 0 && value != arr[index]) index -=1; //if not reduce index with 1
+
+    return index; //return correct index or 0 if not founf
+};
+
+
+/**
+ * @brief Search BINARY in a sorted array
+ * 
+ * @param arr sorted array
+ * @param value value we are looking for
+ * @param n elements in the array
+ * @return Index returned or 0 if not found 
+ */
+int  searchBinary(const int arr[], const int value, const int n){
+    int left = 1; // left index
+    int right = n+1; //right index
+    int mid; //Index in the middel of the array 
+
+    while(left <= right){ //if left == right => we have searched the array with no result
+
+        mid = (left+right)/2; //calculate mid index
+
+        //Mid index gives correct value        
+        if(value == arr[mid]) return mid;
+
+        if(value < arr[mid]){
+            //The value is in the LEFT side of mid
+            right = mid-1; 
+            
+        }else{
+            //The value is in the RIGHT side of mid
+            left = mid+1; 
+        }
+    }
+
+
+    return 0; // Not found and return 0
+}
+
 
 
 /**
