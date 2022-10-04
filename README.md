@@ -20,6 +20,7 @@
 | Permutation           | Given an array, find all permutations  |[HERE](https://github.com/KjetilIN/IDATG2102-AlgoMet-Notes/tree/main/Permutation)|
 | Search BINARY           | Given an sorted array, find target value  |[HERE](https://github.com/KjetilIN/IDATG2102-AlgoMet-Notes/tree/main/Search)|
 | Search SEQUENCE         | Given an unsorted array, find target value  |[HERE](https://github.com/KjetilIN/IDATG2102-AlgoMet-Notes/tree/main/Search)|
+| Binary Search Tree      | Binary Search Tree created by Frode Hauge  |[HERE](https://github.com/KjetilIN/IDATG2102-AlgoMet-Notes/tree/main/BinarySearchTree)|
 
 
 <br>
