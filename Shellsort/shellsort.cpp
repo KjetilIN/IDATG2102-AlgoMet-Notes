@@ -11,11 +11,11 @@ using namespace std;
  * - Usese h values 1, 4, 13, 49, 121, ...
  */
 
-const int N = 10; 
+const int N = 11; 
 
 
 void display(const char arr[], const int n){
-    for(int i = 0; i<n;i++){
+    for(int i = 1; i<n;i++){
         cout << arr[i] << " ";
     }
 
@@ -45,6 +45,11 @@ void shellsort(char arr[], const int n){
             }
             arr[j] = value; //set the value that should be moved back, to the back
 
+            //Diplay the current array and values 
+            cout << "========="<< endl;
+            display(arr,N+1);
+            cout << "i = " << i << ", j = " << j << ", h = " << h << "\n"; 
+
         } 
 
         h /= 3; //Set new h to be the 
@@ -67,10 +72,13 @@ int main() {
 
     array[0] = ' '; //Set setninal key
 
+    string word = "SKRULLINGEN"; //Word of length N
+
     for (int i = 1;  i <= N;  i++) //  array of random letters 
-        array[i] =  static_cast <char> ('A' + (rand() % 26));
+        array[i] = word[i-1];
 
     cout << "\n\nBefore Shellsort:\n\t";
+
     display(array, N+1);    
 
     shellsort(array, N+1);
